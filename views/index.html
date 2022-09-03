@@ -1,0 +1,28 @@
+<script src="/socket.io/socket.io.js"></script>
+
+<div id="container-messages"></div>
+<form id="message-form">
+    <input id="message-input" name="message-name" type="text" placeholder="type yor message">
+    <button type="submit" class="btn btn-primary">send</button>
+</form>
+
+
+<script>
+    const socket = window.io();
+    const msgForm = document.querySelector("#message-form")
+    const msgInput = document.querySelector("#message-input")
+    const messagesContainer = document.querySelector("#container-messages") 
+    
+    msgForm.onsubmit = e =>{
+        e.preventDefault();   // to prevent submit form
+        const msg = msgInput.value;
+        socket.emit('send-message' , {msg} )
+        msgInput.value = '';
+    }
+
+    // socket.emit('message' ,{ message:"hellow from front "})
+    socket.on('test' , ({msg})=>{
+        messagesContainer.innerHTML += `<p> ${msg} </p>`
+        // console.log(msg)
+    })
+</script>
